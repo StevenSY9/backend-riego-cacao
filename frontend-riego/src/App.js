@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Card, Badge, Button, Spinner } from 'react-bootstrap';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const API_URL = 'http://192.168.1.8:3000/api/sensor';
+const API_URL = 'https://backend-riego.onrender.com/api/sensor';
 
 function App() {
   const [lecturas, setLecturas] = useState([]);
