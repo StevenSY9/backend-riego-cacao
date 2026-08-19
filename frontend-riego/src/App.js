@@ -39,33 +39,42 @@ function App() {
   const toggleBomba = async () => {
     const nuevoEstado = !bombaActiva;
     setEnviandoComando(true);
+
+    setBombaActiva(nuevoEstado);
+
+    if (ultimaLectura) {
+      setUltimaLectura({
+        ...ultimaLectura,
+        bomba_activa: nuevoEstado ? 1 : 0
+      });
+    }
     
     try {
       await axios.post(`${API_URL}/control`, { 
         bombaActiva: nuevoEstado 
       });
-      
-      setBombaActiva(nuevoEstado);
-      
-      if (ultimaLectura) {
-        setUltimaLectura({
-          ...ultimaLectura,
-          bomba_activa: nuevoEstado ? 1 : 0
-        });
-      }
+
+      console.log(` Comando enviado: bomba ${nuevoEstado ? 'ON' : 'OFF'}`);
       
     } catch (error) {
       console.error('Error al enviar comando:', error);
+      setBombaActiva(!nuevoEstado);
+      if (ultimaLectura) {
+        setUltimaLectura({
+          ...ultimaLectura,
+          bomba_activa: !nuevoEstado ? 1 : 0
+        });
+      }
       alert('Error al controlar la bomba. Verifica que el backend esté corriendo.');
     } finally {
       setEnviandoComando(false);
     }
   };
 
-  // ---------- Cargar datos al iniciar y cada 2 segundos ----------
+  // ---------- Cargar datos al iniciar y cada 4 segundos ----------
   useEffect(() => {
     obtenerDatos();
-    const intervalo = setInterval(obtenerDatos, 2000);
+    const intervalo = setInterval(obtenerDatos, 4000);
     return () => clearInterval(intervalo);
   }, []);
 
